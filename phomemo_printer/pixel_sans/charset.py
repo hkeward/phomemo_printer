@@ -3,7 +3,7 @@ from .digits import *
 from .symbols import *
 from .emoji import *
 
-characters = {
+charset = {
     "a": CHAR_a,
     "b": CHAR_b,
     "c": CHAR_c,

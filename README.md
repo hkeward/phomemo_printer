@@ -7,6 +7,12 @@ Various methods to connect to the Phomemo printer and print images are excellent
 Tools were tested on a Phomemo M02 Pro printer.
 
 
+## Requirements
+
+- python3
+- bluetooth connection tools (if connecting to the printer over bluetooth)
+
+
 ## Installation
 
 ```
@@ -69,8 +75,22 @@ Press CTRL-C for hangup
 
 ### Sending text to the printer
 
+#### CLI
+
 Format: `sudo phomemo_printer -d {device} -t "text to print"`
 
 ```
-sudo phomemo_printer -d /dev/rfcomm0 -t "text to print"
+sudo phomemo_printer -d /dev/rfcomm0 -t "Hello world"
+```
+
+
+#### Module import
+
+Note that scripts that print to devices in `/dev/` will require superuser permissions to run.
+
+```python3
+from phomemo_printer.ESCPOS_printer import Printer
+
+printer = Printer("/dev/rfcomm0")
+printer.print_text("Hello world")
 ```
