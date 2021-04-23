@@ -1,11 +1,21 @@
 import os, sys
 from .pixel_sans.charset import charset
 from .ESCPOS_constants import *
+import socket
 
 
 class Printer:
-    def __init__(self, device):
-        self.device = device
+    def __init__(self, bluetooth_address, channel):
+        self.s = socket.socket(
+            socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM
+        )
+        self.s.connect((bluetooth_address, channel))
+
+    def close(self):
+        """
+            Close the connection to the bluetooth socket
+        """
+        self.s.close()
 
     def _print_bytes(self, bytes):
         """
@@ -14,8 +24,9 @@ class Printer:
             Args:
                 bytes (bytes): Bytes to write to stdout
         """
-        with os.fdopen(os.open(self.device, os.O_WRONLY), "wb", closefd=False) as dev:
-            dev.write(bytes)
+        self.s.send(bytes)
+        # with os.fdopen(os.open(self.device, os.O_WRONLY), "wb", closefd=False) as dev:
+        #     dev.write(bytes)
 
     def print_text(self, text):
         """

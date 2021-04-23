@@ -2,7 +2,7 @@
 
 I have not been able to print text to the Phomemo printer using standard ESC/POS print commands (if your printer does work with these commands, you should use the library [here](https://github.com/python-escpos/python-escpos)). To work around this, this library allows printing of text as a raster bit image.
 
-Various methods to connect to the Phomemo printer and print images are excellently described [here](https://github.com/vivier/phomemo-tools).
+Various methods to connect to the Phomemo printer and print images are excellently described [here](https://github.com/vivier/phomemo-tools). This package currently only allows connection to the printer via bluetooth.
 
 Tools were tested on a Phomemo M02 Pro printer.
 
@@ -10,7 +10,7 @@ Tools were tested on a Phomemo M02 Pro printer.
 ## Requirements
 
 - python3
-- bluetooth connection tools (if connecting to the printer over bluetooth)
+- bluetooth interrogation tools (e.g. via the `bluez` package)
 
 
 ## Installation
@@ -19,7 +19,7 @@ Tools were tested on a Phomemo M02 Pro printer.
 sudo python3 setup.py install
 ```
 
-This will create and install a CLI called `phomemo_printer` on your PATH.
+This will create a CLI called `phomemo_printer` on your PATH.
 
 
 Alternatively, install via pip:
@@ -31,14 +31,17 @@ python3 -m pip install phomemo_printer
 
 ## Usage
 
-### Connecting to the printer (bluetooth)
+The printer is connected to over bluetooth. To connect, the bluetooth address and channel must be determined.
 
-*For non-bluetooth connection methods, see [https://github.com/vivier/phomemo-tools](https://github.com/vivier/phomemo-tools).*
+
+### Finding the printer's bluetooth address and channel
 
 The Debian package `bluez` provides the utilities needed to scan for and connect to the printer via bluetooth.
 
 
-1. Find the bluetooth printer's MAC address
+1. Find the printer's bluetooth address
+
+The printer should be powered on and not connected to any computer or app.
 
 ```
 $ hcitool scan
@@ -47,14 +50,17 @@ Scanning ...
 	00:AA:13:41:11:A5	M02 Pro
 ```
 
+The bluetooth address should be in the format xx:xx:xx:xx:xx:xx. If more than one bluetooth device is discovered, look for one with the name of your printer.
+
+
 2. Determine which channel to connect to the device on
 
-Format: `sdptool browse {MAC_address}`
+Format: `sdptool browse bluetooth_address`
 
 ```
 $ sdptool browse 00:AA:13:41:11:A5
 
-Browsing 00:AA:13:41:11:A5 ...
+Browsing  ...
 Service Name: SerialPort
 Service RecHandle: 0x1000f
 Service Class ID List:
@@ -68,36 +74,24 @@ Profile Descriptor List:
     Version: 0x0102
 ```
 
-3. Connect to the printer
-
-Format: `sudo rfcomm connect {device} {MAC_address} {channel}`. The device can be any `/dev/rfcomm` device that is not in use.
-
-```
-$ sudo rfcomm connect /dev/rfcomm0 00:AA:13:41:11:A5 6
-
-Connected /dev/rfcomm0 to  on channel 6
-Press CTRL-C for hangup
-```
-
 
 ### Sending text to the printer
 
-#### CLI
+#### Via CLI
 
-Format: `sudo phomemo_printer -d {device} -t "text to print"`
+Format: `phomemo_printer -a bluetooth_address -c bluetooth_channel -t "text to print"`
 
 ```
-sudo phomemo_printer -d /dev/rfcomm0 -t "Hello world"
+phomemo_printer -a 00:AA:13:41:11:A5 -c 6 -t "Hello world"
 ```
 
 
-#### Module import
-
-Note that scripts that print to devices in `/dev` will require superuser permissions to run.
+#### Via module import
 
 ```python3
 from phomemo_printer.ESCPOS_printer import Printer
 
-printer = Printer("/dev/rfcomm0")
+printer = Printer(bluetooth_address="00:AA:13:41:11:A5", channel=6)
 printer.print_text("Hello world")
+printer.close()
 ```
