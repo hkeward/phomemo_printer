@@ -86,4 +86,5 @@ charset = {
     "\\": CHAR_BACKSLASH,
     " ": CHAR_space,
     "+": CHAR_LEMON,
+    "CHAR_NOT_FOUND": CHAR_NOT_FOUND,
 }
