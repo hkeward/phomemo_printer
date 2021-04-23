@@ -21,8 +21,9 @@ with open("requirements.txt") as f:
 setup(
     name="phomemo_printer",
     version=version["__version__"],
-    description=("Print text from a Phomemo printer."),
+    description="Print text as a raster bit image from a Phomemo printer.",
     long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Heather Ward",
     author_email="heather.ward13@gmail.com",
     url="https://github.com/hkeward/phomemo_printer",
@@ -30,7 +31,12 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     include_package_data=True,
-    entry_points = {
-    	"console_scripts": ["phomemo_printer=phomemo_printer.command_line:cli"]
-    }
+    entry_points={
+        "console_scripts": ["phomemo_printer=phomemo_printer.command_line:cli"]
+    },
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+        "Operating System :: Unix",
+    ],
 )

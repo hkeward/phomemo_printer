@@ -1,6 +1,6 @@
-# Phomemo printer - python utilities to allow printing text from the phomemo printer
+# Phomemo printer - python utilities to allow printing text from the Phomemo printer
 
-I have not been able to print text to the Phomemo printer using standard ESC/POS print commands; to work around this, this library allows printing of text as a raster bit image.
+I have not been able to print text to the Phomemo printer using standard ESC/POS print commands (if your printer does work with these commands, you should use the library [here](https://github.com/python-escpos/python-escpos)). To work around this, this library allows printing of text as a raster bit image.
 
 Various methods to connect to the Phomemo printer and print images are excellently described [here](https://github.com/vivier/phomemo-tools).
 
@@ -20,6 +20,13 @@ sudo python3 setup.py install
 ```
 
 This will create and install a CLI called `phomemo_printer` on your PATH.
+
+
+Alternatively, install via pip:
+
+```
+python3 -m pip install phomemo_printer
+```
 
 
 ## Usage
@@ -86,7 +93,7 @@ sudo phomemo_printer -d /dev/rfcomm0 -t "Hello world"
 
 #### Module import
 
-Note that scripts that print to devices in `/dev/` will require superuser permissions to run.
+Note that scripts that print to devices in `/dev` will require superuser permissions to run.
 
 ```python3
 from phomemo_printer.ESCPOS_printer import Printer
