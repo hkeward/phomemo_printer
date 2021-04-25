@@ -8,9 +8,10 @@ def main(args):
 
     if args.print_charset:
         printer.print_charset()
-    else:
-        text = args.text
-        printer.print_text(text)
+    elif args.text:
+        printer.print_text(args.text)
+    elif args.image:
+        printer.print_image(args.image)
 
     printer.close()
 
@@ -31,6 +32,9 @@ def cli():
         help="Print full character set and exit",
         action="store_true",
         default=False,
+    )
+    group.add_argument(
+        "-i", "--image", type=str, help="Image file to print", required=False
     )
     parser.add_argument(
         "-a",
