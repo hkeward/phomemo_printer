@@ -1,8 +1,8 @@
-# Phomemo printer - python utilities to allow printing text from the Phomemo printer
+# Phomemo printer - python utilities to allow printing text and images from the Phomemo printer
 
-I have not been able to print text to the Phomemo printer using standard ESC/POS print commands (if your printer does work with these commands, you should use the library [here](https://github.com/python-escpos/python-escpos)). To work around this, this library allows printing of text as a raster bit image.
+I have not been able to print text to the Phomemo printer using standard ESC/POS print commands (if your printer does work with these commands, you should use the library [here](https://github.com/python-escpos/python-escpos)). To work around this, this library allows printing of text as a raster bit image. It also allows for actual image files to be printed directly.
 
-Various methods to connect to the Phomemo printer and print images are excellently described [here](https://github.com/vivier/phomemo-tools). This package currently only allows connection to the printer via bluetooth.
+This currently only allows connection to the printer via bluetooth; various methods to connect to the Phomemo printer and print images are excellently described [here](https://github.com/vivier/phomemo-tools) if bluetooth does not suit your needs.
 
 Tools were tested on a Phomemo M02 Pro printer.
 
@@ -95,3 +95,8 @@ printer = Printer(bluetooth_address="00:AA:13:41:11:A5", channel=6)
 printer.print_text("Hello world")
 printer.close()
 ```
+
+
+### Sending images to the printer
+
+Format: `phomemo_printer -a bluetooth_address -c bluetooth_channel -i "/path/to/image.png"`
