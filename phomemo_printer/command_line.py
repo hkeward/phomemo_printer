@@ -11,7 +11,7 @@ def main(args):
     elif args.text:
         printer.print_text(args.text)
     elif args.image:
-        printer.print_image(args.image)
+        printer.print_image(args.image, args.brightness)
 
     printer.close()
 
@@ -49,6 +49,13 @@ def cli():
         type=int,
         help="The channel to connect to your bluetooth device on",
         required=True,
+    )
+    parser.add_argument(
+        "-b",
+        "--brightness",
+        type=float,
+        help="Optionally alter image brightness before printing (< 1.0 - decrease brightness; > 1.0 - increase brightness)",
+        required=False,
     )
 
     args = parser.parse_args()

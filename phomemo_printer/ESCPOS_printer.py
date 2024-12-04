@@ -2,7 +2,7 @@ import os, sys
 from .pixel_sans.charset import charset
 from .ESCPOS_constants import *
 import socket
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 
 class Printer:
@@ -140,12 +140,13 @@ class Printer:
         self.print_text(char_string_split)
 
     # from https://github.com/vivier/phomemo-tools
-    def print_image(self, image_path):
+    def print_image(self, image_path, brightness=None):
         """
             Print an image
 
             Args:
                 image_path (str): Path to an image file to print
+                brightness (float): Optionally decrease (< 1.0) or increase (> 1.0) image brightness
         """
         image = Image.open(image_path)
         if image.width > image.height:
@@ -157,6 +158,10 @@ class Printer:
         image = image.resize(
             size=(IMAGE_WIDTH_BITS, int(image.height * IMAGE_WIDTH_BITS / image.width))
         )
+
+        if brightness is not None:
+            filter = ImageEnhance.Brightness(image)
+            image = filter.enhance(brightness)
 
         # black&white printer: dithering
         image = image.convert(mode="1")

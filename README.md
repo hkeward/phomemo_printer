@@ -100,3 +100,5 @@ printer.close()
 ### Sending images to the printer
 
 Format: `phomemo_printer -a bluetooth_address -c bluetooth_channel -i "/path/to/image.png"`
+
+You can increase or decrease the brightness of the image using `-b <float>` - numbers < 1.0 decrease the brightness, and > 1.0 increase it.
